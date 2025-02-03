@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-        // Логика меню. не завершать программу, пока не нажмут выход
+        // Логика меню.
         // 1. Шифрование с ключом
         // 2. Расшифровка с ключом
         // 3. Выйти
@@ -17,16 +17,6 @@ import java.util.Scanner;
 
 
 public class CaesarCipher {
-    private static final String ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-//    public class Constants {
-//        private static final String rus = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ";
-//        private static final String eng = "QWERTYUIOPASDFGHJKLZXCVBNM";
-//        private static final String cypher = "0123456789";
-//        private static final String z = "~!@#$%^&*()_+-={}[]|:'\"";
-//        public static final String ALPHABET = rus + eng + rus.toLowerCase()+ eng.toLowerCase() + cypher + z;
-//    }
-    private static final int ALPHABET_SIZE = ALPHABET.length();
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -35,7 +25,7 @@ public class CaesarCipher {
             System.out.println("1 - Зашифровать");
             System.out.println("2 - Расшифровать");
             System.out.println("3 - Выйти");
-            System.out.print("Ваш выбор: ");
+            System.out.print("Выбирите номер команды: ");
             int choice = scanner.nextInt();
 
             if (choice == 3) {
@@ -43,8 +33,8 @@ public class CaesarCipher {
                 break;
             }
 
-            System.out.print("Введите ключ: ");
-            int shift = scanner.nextInt() % ALPHABET_SIZE;
+            System.out.print("Введите ключ шифрования: ");
+            int shift = scanner.nextInt() % Constants.ALPHABET.length();
 
             String inputFilePath;
             String outputFilePath;
@@ -62,7 +52,7 @@ public class CaesarCipher {
 
             try {
                 String text = new String(Files.readAllBytes(Paths.get(inputFilePath)), StandardCharsets.UTF_8);
-                String resultText = (choice == 1) ? encrypt(text, shift) : decrypt(text, shift);
+                String resultText = (choice == 1) ? Encryptor.encrypt(text, shift) : Decryptor.decrypt(text, shift);
 
                 Files.write(Paths.get(outputFilePath), resultText.getBytes(StandardCharsets.UTF_8));
                 System.out.println((choice == 1 ? "Текст зашифрован" : "Текст расшифрован") + " и записан в " + outputFilePath);
@@ -70,33 +60,5 @@ public class CaesarCipher {
                 System.err.println("Ошибка при работе с файлами: " + e.getMessage());
             }
         }
-    }
-
-    private static String encrypt(String text, int shift) {
-        StringBuilder encrypted = new StringBuilder();
-        for (char c : text.toLowerCase().toCharArray()) {
-            int index = ALPHABET.indexOf(c);
-            if (index != -1) {
-                int newIndex = (index + shift) % ALPHABET_SIZE;
-                encrypted.append(ALPHABET.charAt(newIndex));
-            } else {
-                encrypted.append(c);
-            }
-        }
-        return encrypted.toString();
-    }
-
-    private static String decrypt(String text, int shift) {
-        StringBuilder decrypted = new StringBuilder();
-        for (char c : text.toLowerCase().toCharArray()) {
-            int index = ALPHABET.indexOf(c);
-            if (index != -1) {
-                int newIndex = (index - shift + ALPHABET_SIZE) % ALPHABET_SIZE;
-                decrypted.append(ALPHABET.charAt(newIndex));
-            } else {
-                decrypted.append(c);
-            }
-        }
-        return decrypted.toString();
     }
 }
