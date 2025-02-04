@@ -16,7 +16,7 @@ import java.util.Scanner;
          */
 
 
-public class CaesarCipher {
+public class AppCipher {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -25,16 +25,17 @@ public class CaesarCipher {
             System.out.println("1 - Зашифровать");
             System.out.println("2 - Расшифровать");
             System.out.println("3 - Выйти");
-            System.out.print("Выбирите номер команды: ");
-            int choice = scanner.nextInt();
+            System.out.print("Ваш выбор: ");
+
+            int choice = Validator.getValidChoice(scanner);
 
             if (choice == 3) {
                 System.out.println("Выход из программы.");
                 break;
             }
 
-            System.out.print("Введите ключ шифрования: ");
-            int shift = scanner.nextInt() % Constants.ALPHABET.length();
+            System.out.print("Введите ключ: ");
+            int shift = Validator.getValidIntInput(scanner) % Constants.ALPHABET.length();
 
             String inputFilePath;
             String outputFilePath;
@@ -42,12 +43,9 @@ public class CaesarCipher {
             if (choice == 1) {
                 inputFilePath = "input.txt";
                 outputFilePath = "encrypted.txt";
-            } else if (choice == 2) {
+            } else {
                 inputFilePath = "encrypted.txt";
                 outputFilePath = "decrypted.txt";
-            } else {
-                System.out.println("Некорректный выбор, попробуйте снова.");
-                continue;
             }
 
             try {
