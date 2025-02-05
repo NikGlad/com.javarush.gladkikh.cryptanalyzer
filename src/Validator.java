@@ -8,7 +8,7 @@ class Validator {
                 return scanner.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("Ошибка: Введите целое число.");
-                scanner.next(); // Очищаем некорректный ввод
+                scanner.next();
             }
         }
     }
